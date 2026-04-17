@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 45 33% 97%;
+    --foreground: 150 15% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 150 15% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 15% 15%;
+    --primary: 145 28% 35%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 30% 93%;
+    --secondary-foreground: 150 15% 25%;
+    --muted: 45 20% 93%;
+    --muted-foreground: 150 10% 45%;
+    --accent: 45 60% 88%;
+    --accent-foreground: 150 15% 20%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 45 20% 87%;
+    --input: 45 20% 87%;
+    --ring: 145 28% 35%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+    /* Remove blue tap highlight on mobile for native-app feel */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    /* Prevent rubber-band overscroll on iOS outside of scroll containers */
+    overscroll-behavior: none;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Safe area padding for notched iPhones (Dynamic Island, Face ID) */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  /* Prevent iOS auto-zoom on form input focus */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+@layer components {
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+    /* On mobile, push content below the fixed hamburger menu button (top-4 + h-10 = 56px) */
+    padding-top: clamp(4.5rem, 8vw, 2rem);
+  }
+
+  /* On desktop (lg+), restore normal top padding */
+  @media (min-width: 1024px) {
+    .page-container {
+      padding-top: 2rem;
+    }
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  .stat-card {
+    @apply bg-white rounded-2xl p-5 border border-border shadow-sm card-hover;
+  }
+
+  .macro-badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+
+  .section-title {
+    @apply text-2xl font-display font-semibold text-foreground;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, hsl(145 28% 35%) 0%, hsl(145 28% 45%) 100%);
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150;
+  }
+
+  .sidebar-link:hover {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  .sidebar-link.active {
+    @apply bg-primary text-primary-foreground shadow-sm;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-foreground mb-1.5;
+  }
+
+  .form-input {
+    @apply w-full rounded-xl border border-input bg-white px-3.5 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-shadow;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-medium shadow-sm hover:opacity-90 transition-opacity;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-accent transition-colors;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 text-muted-foreground px-3 py-2 rounded-xl text-sm font-medium hover:bg-muted hover:text-foreground transition-colors;
+  }
+
+  .tag-pill {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sage-100 text-sage-800;
+  }
+
+  /* Safe area top padding helper — applied on the root flex container */
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(145 28% 75%); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(145 28% 60%); }
