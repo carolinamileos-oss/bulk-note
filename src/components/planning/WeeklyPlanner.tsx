@@ -2,20 +2,26 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { formatCurrency, calculateRecipeMacros, CATEGORY_LABELS } from '@/lib/utils'
+import { formatCurrency, calculateRecipeMacros } from '@/lib/utils'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
 import { Plus, Trash2, ShoppingCart, Loader2 } from 'lucide-react'
 
+// Minimal type for the recipe dropdown — only id and name are used
+interface RecipeOption {
+  id: string; name: string
+}
+
+// Full recipe type used inside plan items (includes macros)
 interface Recipe {
   id: string; name: string; category: string; servings: number
   ingredients: { quantity: number; unit: string; ingredient: { calories: number; protein: number; carbs: number; fat: number; costPer: number; unit: string } }[]
 }
 
 interface PlanItem {
-  id: string; recipeId: string; date: string; mealType: string; servings: number; recipe: Recipe
+  id: string; recipeId: string; date: string | Date; mealType: string; servings: number; recipe: Recipe
 }
 
 interface DayData {
@@ -23,7 +29,7 @@ interface DayData {
 }
 
 interface Props {
-  days: DayData[]; recipes: Recipe[]; planId: string | null; monday: string; sunday: string
+  days: DayData[]; recipes: RecipeOption[]; planId: string | null; monday: string; sunday: string
 }
 
 const MEAL_TYPES = [
@@ -37,7 +43,7 @@ const MEAL_TYPES = [
 
 export function WeeklyPlanner({ days: initialDays, recipes, planId: initialPlanId, monday, sunday }: Props) {
   const router = useRouter()
-  const [days, setDays] = useState(initialDays)
+  const [days] = useState(initialDays)
   const [planId, setPlanId] = useState(initialPlanId)
   const [addingTo, setAddingTo] = useState<string | null>(null) // dateKey
   const [addForm, setAddForm] = useState({ recipeId: '', mealType: 'lunch', servings: 1 })
