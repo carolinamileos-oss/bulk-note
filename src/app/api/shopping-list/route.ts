@@ -1,6 +1,8 @@
+export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+
 import { prisma } from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
-import { calculateRecipeMacros } from '@/lib/utils'
 
 export async function GET() {
   const lists = await prisma.shoppingList.findMany({
